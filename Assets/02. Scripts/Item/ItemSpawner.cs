@@ -20,6 +20,20 @@ public class ItemSpawner : MonoBehaviour
     public float minDistance = 1.5f;  // 겹침 방지
     public LayerMask itemLayer;
 
+    private Queue<GameObject> itemPool = new Queue<GameObject>();
+
+    private void Awake()
+    {
+        //풀 초기 생성
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject obj = Instantiate(itemPrefab);
+            obj.SetActive(false);
+            itemPool.Enqueue(obj);
+        }
+    }
+
+
     private void Start()
     {
         SpawnItems();
@@ -51,11 +65,18 @@ public class ItemSpawner : MonoBehaviour
                     continue;
 
                 // 4) 아이템 생성
-                Instantiate(itemPrefab, spawnPos, Quaternion.identity);
+                GameObject item = itemPool.Dequeue();
+                item.transform.position = spawnPos;
+                item.transform.rotation = Quaternion.identity;
+                item.SetActive(true);
                 placed++;
             }
-            // else → 평평한 지면 못 찾으면 재시도 (레이어 설정 문제)
         }
+    }
+    public void ReturnToPool(GameObject item)
+    {
+        item.SetActive(false);
+        itemPool.Enqueue(item);
     }
 
     //에디터에서 영역 표시용 기즈모

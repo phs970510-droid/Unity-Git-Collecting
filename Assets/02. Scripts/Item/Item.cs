@@ -30,6 +30,7 @@ public class Item : MonoBehaviour
         if (pickupEffect != null)
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+        ItemSpawner spawner = FindObjectOfType<ItemSpawner>();
+        spawner.ReturnToPool(this.gameObject);
     }
 }
