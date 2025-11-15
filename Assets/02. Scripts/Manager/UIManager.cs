@@ -2,57 +2,68 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("수집 UI 텍스트")]
+    public static UIManager Instance;
+
+    [Header("UI 참조")]
     public TMP_Text itemText;
+    public GameObject clearPanel;    //Clear 시 활성화되는 패널
 
-    [Header("클리어 패널")]
-    public GameObject clearPanel;
-
-    [Header("버튼")]
-    public Button restartButton;
-    public Button quitButton;
-
-    private void Start()
+    private void Awake()
     {
-        //시작 시 클리어 패널은 꺼두기
-        if (clearPanel != null)
-            clearPanel.SetActive(false);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        // 버튼 이벤트 연결
-        if (restartButton != null)
-            restartButton.onClick.AddListener(OnRestartClicked);
-
-        if (quitButton != null)
-            quitButton.onClick.AddListener(OnQuitClicked);
+        Instance = this;
     }
 
-    //수집/목표 UI 갱신
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        //씬 바뀌면 항상 UI 최신화
+        if (DataManager.Instance != null)
+        {
+            UpdateItemUI(
+                DataManager.Instance.currentItemCount,
+                DataManager.Instance.targetItemCount
+            );
+        }
+
+        // 씬 로드 시 클리어 패널은 기본 비활성화
+        if (clearPanel != null)
+            clearPanel.SetActive(false);
+    }
+
+    // 아이템 텍스트 업데이트
     public void UpdateItemUI(int current, int target)
     {
         if (itemText != null)
-        {
-            itemText.text = $"{current} / {target}";
-        }
+            itemText.text = $"Item {current}/{target}";
     }
 
-    //목표 달성 시 클리어 패널 표시
+    //클리어 패널 표시
     public void ShowClearPanel()
     {
         if (clearPanel != null)
             clearPanel.SetActive(true);
-    }
 
-    private void OnRestartClicked()
-    {
-        DataManager.Instance.RestartGame();
-    }
-
-    private void OnQuitClicked()
-    {
-        DataManager.Instance.QuitGame();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

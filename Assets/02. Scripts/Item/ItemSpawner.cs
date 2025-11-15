@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [Header("아이템 프리팹")]
-    public GameObject itemPrefab;
+    public GameObject[] itemPrefab;
 
     [Header("스폰 영역 설정 (X,Z 기준)")]
     public Vector2 areaMin = new Vector2(-10f, -10f);
@@ -27,12 +27,11 @@ public class ItemSpawner : MonoBehaviour
         //풀 초기 생성
         for (int i = 0; i < spawnCount; i++)
         {
-            GameObject obj = Instantiate(itemPrefab);
+            GameObject obj = Instantiate(itemPrefab[Random.Range(0, itemPrefab.Length)]);
             obj.SetActive(false);
             itemPool.Enqueue(obj);
         }
     }
-
 
     private void Start()
     {

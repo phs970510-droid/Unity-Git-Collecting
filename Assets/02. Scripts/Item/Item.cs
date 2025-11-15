@@ -5,31 +5,27 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Item : MonoBehaviour
 {
-    [Header("점수 범위")]
-    public int minScore = 1;
-    public int maxScore = 3;
-
-    [Header("수집 사운드")]
-    public AudioClip pickupSound;
-
-    [Header("수집 이펙트")]
-    public ParticleSystem pickupEffect;
+    public ItemDataSO data;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
             return;
 
-        int amount = Random.Range(minScore, maxScore + 1);
+        //점수 범위는 SO
+        int amount = Random.Range(data.minScore, data.maxScore + 1);
 
         DataManager.Instance.AddItem(amount);
 
-        if (pickupSound != null)
-            AudioManager.Instance.PlaySoundEffect(pickupSound);
+        //사운드
+        if (data.pickupSound != null)
+            AudioManager.Instance.PlaySoundEffect(data.pickupSound);
 
-        if (pickupEffect != null)
-            Instantiate(pickupEffect, transform.position, Quaternion.identity);
+        //이펙트
+        if (data.pickupEffect != null)
+            Instantiate(data.pickupEffect, transform.position, Quaternion.identity);
 
+        //풀로 복귀
         ItemSpawner spawner = FindObjectOfType<ItemSpawner>();
         spawner.ReturnToPool(this.gameObject);
     }

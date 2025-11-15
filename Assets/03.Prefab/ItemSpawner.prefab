@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f758fd37e6135744894508bdfa0d88a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 2786995903071117573, guid: 3d4fe9458d20928438a155df443baf0d, type: 3}
+  itemPrefab:
+  - {fileID: 2786995903071117573, guid: 3d4fe9458d20928438a155df443baf0d, type: 3}
   areaMin: {x: -10, y: -10}
   areaMax: {x: 10, y: 10}
   groundLayer:

@@ -13,8 +13,8 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance { get; private set; }
 
     [Header("목표/현재 수집 개수")]
-    public int targetItemCount = 0;
-    public int currentItemCount = 0;
+    public int targetItemCount;
+    public int currentItemCount;
 
     [Header("참조")]
     public UIManager uiManager;
@@ -23,40 +23,29 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-    }
 
-    private void Start()
-    {
-        if (uiManager != null)
-            uiManager.UpdateItemUI(currentItemCount, targetItemCount);
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        if (uiManager == null)
+            uiManager = FindObjectOfType<UIManager>();
     }
 
     public void AddItem(int amount)
     {
-        if (gameState != GameState.Playing)
-            return;
-
         currentItemCount += amount;
+        Debug.Log("AddItem 실행됨: " + currentItemCount);
 
         if (uiManager != null)
             uiManager.UpdateItemUI(currentItemCount, targetItemCount);
 
-        // 목표 달성 체크
         if (currentItemCount >= targetItemCount)
-        {
             ClearGame();
-        }
-
-        Debug.Log("Collected: " + amount);
     }
 
     private void ClearGame()
@@ -65,10 +54,15 @@ public class DataManager : MonoBehaviour
 
         if (uiManager != null)
             uiManager.ShowClearPanel();
+
+        Debug.Log("CLEAR GAME CALLED");
     }
 
     public void RestartGame()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
         );
