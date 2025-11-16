@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     private float vertical;
 
+    public Animator animator;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,9 +31,13 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
+        float speed = new Vector3(horizontal, 0, vertical).magnitude;
+        animator.SetFloat("Speed", speed);
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             jumpRequested = true;
+            animator.SetBool("IsJumping", true);
         }
     }
     private void FixedUpdate()
@@ -49,6 +55,9 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.up * data.jumpForce, ForceMode.VelocityChange);
             jumpRequested = false;
         }
+
+        if (isGrounded)
+            animator.SetBool("IsJumping", false);
     }
     void PlayerMove()
     {
