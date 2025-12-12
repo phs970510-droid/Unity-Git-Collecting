@@ -18,18 +18,26 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     private float vertical;
 
+    public Joystick joystick;
+
     public Animator animator;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (joystick == null)
+            joystick = FindObjectOfType<Joystick>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        //horizontal = Input.GetAxis("Horizontal");
+        //vertical = Input.GetAxis("Vertical");
+
+        horizontal = joystick.inputDir.x;
+        vertical = joystick.inputDir.y;
 
         float speed = new Vector3(horizontal, 0, vertical).magnitude;
         animator.SetFloat("Speed", speed);

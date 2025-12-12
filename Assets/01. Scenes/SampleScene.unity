@@ -228,6 +228,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!54 &833213678 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 5507824849599261570, guid: 771f0a5a1fea7004c9f232608911f29b, type: 3}
+  m_PrefabInstance: {fileID: 7474070307342845919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &976095393 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6805047879325365055, guid: aa9387d3dce6de248b25e9564bb8d45d, type: 3}
@@ -441,6 +446,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3873312906737930994, guid: 8e6836979f56724418e822f74efb9252, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7363521270609511087, guid: 8e6836979f56724418e822f74efb9252, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -608,6 +617,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 966628697359174464, guid: 771f0a5a1fea7004c9f232608911f29b, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 833213678}
     - target: {fileID: 6059491473239902919, guid: 771f0a5a1fea7004c9f232608911f29b, type: 3}
       propertyPath: m_Name
       value: Idle
